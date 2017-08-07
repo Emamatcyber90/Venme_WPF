@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,19 @@ namespace VenmeWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private VenmeContext _venmeContext = new VenmeContext();
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Data.CollectionViewSource venmeContextViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("venmeContextViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            _venmeContext.Transactions.Load();
+            venmeContextViewSource.Source = _venmeContext.Transactions.Local;
         }
     }
 }
