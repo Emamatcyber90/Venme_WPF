@@ -10,10 +10,15 @@
         <CollectionViewSource x:Key="venmeContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:VenmeContext}, CreateList=True}"/>
     </Window.Resources>
     <Grid DataContext="{StaticResource venmeContextViewSource}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="487*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="56,79,0,0" VerticalAlignment="Top" Height="141" Width="424" ItemsSource="{Binding}">
             <DataGrid.Columns>
                 <!--<DataGridTextColumn Binding="{Binding profit}" IsReadOnly="True" />-->
             </DataGrid.Columns>
         </DataGrid>
+        <DatePicker HorizontalAlignment="Left" Margin="71,43,0,0" VerticalAlignment="Top" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
     </Grid>
 </Window>
