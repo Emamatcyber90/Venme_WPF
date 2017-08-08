@@ -23,27 +23,48 @@ namespace VenmeWPF
     {
         private VenmeContext _venmeContext = new VenmeContext();
 
-        
+        private DateTime? _datePicked;
+
+        private CollectionViewSource _venmeContextViewSource;
+
+
+
         public MainWindow()
         {
             InitializeComponent();
+            label.Content = "Please select a date";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            CollectionViewSource venmeContextViewSource = (CollectionViewSource)FindResource("venmeContextViewSource");
+            _venmeContextViewSource = (CollectionViewSource)FindResource("venmeContextViewSource");
             // Load data by setting the CollectionViewSource.Source property:
             _venmeContext.Transactions.Load();
-            venmeContextViewSource.Filter += yourFilter;
-            venmeContextViewSource.Source = _venmeContext.Transactions.Local;
+            _venmeContextViewSource.Filter += yourFilter;
+            _venmeContextViewSource.Source = _venmeContext.Transactions.Local;
         }
 
         private void yourFilter(object sender, FilterEventArgs e)
         {
             var obj = e.Item as Transaction;
-            if (obj != null)
-                e.Accepted = obj.FromUserId.Equals(1);
+            //if (obj != null)
+            //    e.Accepted = !obj.FromUserId.Equals(obj.toUserId);
+
+            if (obj == null)
+            {
+                e.Accepted = false;
+                return;
+            }
+
+            if (_datePicked == null)
+            {
+                e.Accepted = false;
+                return;
+            }
+
+            //e.Accepted = !obj.FromUserId.Equals(_datePicked.Value);
+            e.Accepted = true;
         }
 
         private void DatePicker_SelectedDateChanged(object sender,
@@ -53,17 +74,11 @@ namespace VenmeWPF
             var picker = sender as DatePicker;
 
             // ... Get nullable DateTime from SelectedDate.
-            DateTime? date = picker.SelectedDate;
-            if (date == null)
-            {
-                // ... A null object.
-                this.Title = "No date";
-            }
-            else
-            {
-                // ... No need to display the time.
-                this.Title = date.Value.ToShortDateString();
-            }
+            _datePicked = picker.SelectedDate;
+
+            label.Content = _datePicked == null ? "Please select a date" : "";
+
+            _venmeContextViewSource.View.Refresh();
         }
     }
 }
