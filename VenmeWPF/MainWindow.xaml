@@ -10,7 +10,10 @@
         <CollectionViewSource x:Key="venmeContextViewSource" d:DesignSource="{d:DesignInstance {x:Type local:VenmeContext}, CreateList=True}"/>
     </Window.Resources>
     <Grid DataContext="{StaticResource venmeContextViewSource}">
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="56,79,0,0" VerticalAlignment="Top" Height="141" Width="424" ItemsSource="{Binding}"/>
-
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="56,79,0,0" VerticalAlignment="Top" Height="141" Width="424" ItemsSource="{Binding}">
+            <DataGrid.Columns>
+                <!--<DataGridTextColumn Binding="{Binding profit}" IsReadOnly="True" />-->
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
